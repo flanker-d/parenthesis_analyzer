@@ -5,13 +5,14 @@
 #include <stack>
 
 #include "data_types.h"
+#include "TokenMap.h"
 
 class Analyzer
 {
 private:
   void AnalyzeNextSymbol(std::string &input_string);
-  void AnalyzeOpenParenthesis(states_e a_state);
-  void AnalyzeCloseParenthesis(states_e a_state);
+  bool AnalyzeOpenParenthesis(ParenthesisType_e a_type);
+  bool AnalyzeCloseParenthesis(ParenthesisType_e a_type);
 
 public:
   Analyzer();
@@ -19,8 +20,9 @@ public:
 
 private:
   states_e m_curState;
-  std::stack<state_t> m_stack;
+  std::stack<Token_T> m_stack;
   int m_pos;
+  TokenMap m_token_map;
 };
 
 #endif // ANALYZER_H

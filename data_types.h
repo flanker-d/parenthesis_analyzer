@@ -1,6 +1,24 @@
 #ifndef DATA_TYPES_H
 #define DATA_TYPES_H
 
+typedef enum ParenthesisType_e
+{
+  ParenthesisType_NoParenthsis = 0,
+
+  ParenthesisType_OpenRound = -1,
+  ParenthesisType_CloseRound = 1,
+
+  ParenthesisType_OpenSquare = -2,
+  ParenthesisType_CloseSquare = 2,
+
+  ParenthesisType_OpenCurly = -3,
+  ParenthesisType_CloseCurly = 3,
+
+  ParenthesisType_OpenAngled = -4,
+  ParenthesisType_CloseAngled = 4,
+
+} ParenthesisType_e;
+
 typedef enum states_e
 {
   states_init = 0,
@@ -13,14 +31,15 @@ typedef enum states_e
 
 } states_e;
 
-typedef struct state_t
+
+typedef struct Token_T
 {
-  states_e state;
-  int pos;
+  ParenthesisType_e parenthesisType;
+  int position;
 
-  state_t() : state(states_e::states_init), pos(0) {}
+  Token_T() : parenthesisType(ParenthesisType_e::ParenthesisType_NoParenthsis), position(0) {}
 
-} state_t;
+} Token_T;
 
 
 #endif // DATA_TYPES_H

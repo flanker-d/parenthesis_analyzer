@@ -10,22 +10,28 @@ void Analyzer::AnalyzeNextSymbol(std::string &input_string)
     std::cout << "success" << std::endl;
 }
 
-void Analyzer::AnalyzeOpenParenthesis(states_e a_state)
+bool Analyzer::AnalyzeOpenParenthesis(ParenthesisType_e a_type)
 {
-  state_t state;
-  state.state = a_state;
-  state.pos = m_pos;
-  m_stack.push(state);
+  Token_T token;
+  token.parenthesisType = a_type;
+  token.position = m_pos;
+  m_stack.push(token);
+  return true;
 }
 
-void Analyzer::AnalyzeCloseParenthesis(states_e a_state)
+bool Analyzer::AnalyzeCloseParenthesis(ParenthesisType_e a_type)
 {
-  state_t last_state = m_stack.top();
-  if(last_state.state == a_state)
+  Token_T last_stack_token = m_stack.top();
+  ParenthesisType_e mirrorType = (ParenthesisType_e) -a_type;
+  if(last_stack_token.parenthesisType == mirrorType)
+  {
     m_stack.pop();
+    return true;
+  }
   else
   {
-    std::cout << "error: round_close [from pos " << last_state.pos << " to " << m_pos << "]" << std::endl;
+    std::cout << "error: round_close [from pos " << last_stack_token.position << " to " << m_pos << "]" << std::endl;
+    return false;
   }
 }
 
@@ -35,29 +41,32 @@ Analyzer::Analyzer() : m_curState(states_e::states_init), m_pos(0)
 
 void Analyzer::AnalyzeIt(std::string &input_string)
 {
+  bool result = false;
   char cur_symbol = input_string.front();
-  switch(cur_symbol)
+
+  ParenthesisType_e parenthesis_type = m_token_map.GetParenthesisType(cur_symbol);
+
+  switch(parenthesis_type)
   {
-  case states_e::states_round_open:
-    AnalyzeOpenParenthesis(states_e::states_round_open);
+  case ParenthesisType_OpenAngled:
+  case ParenthesisType_OpenCurly:
+  case ParenthesisType_OpenRound:
+  case ParenthesisType_OpenSquare:
+    result = AnalyzeOpenParenthesis((ParenthesisType_e) parenthesis_type);
     break;
-  case states_e::states_round_close:
-    AnalyzeCloseParenthesis(states_e::states_round_open);
-    break;
-  case states_e::states_square_open:
-    AnalyzeOpenParenthesis(states_e::states_square_open);
-    break;
-  case states_e::states_square_close:
-    AnalyzeCloseParenthesis(states_e::states_square_open);
-    break;
-  case states_e::states_figur_open:
-    AnalyzeOpenParenthesis(states_e::states_figur_open);
-    break;
-  case states_e::states_figur_close:
-    AnalyzeCloseParenthesis(states_e::states_figur_open);
+  case ParenthesisType_CloseAngled:
+  case ParenthesisType_CloseCurly:
+  case ParenthesisType_CloseRound:
+  case ParenthesisType_CloseSquare:
+    result = AnalyzeCloseParenthesis((ParenthesisType_e) parenthesis_type);
     break;
   default:
+    result = true;
     break;
   }
-  AnalyzeNextSymbol(input_string);
+
+  if(result)
+    AnalyzeNextSymbol(input_string);
+  else
+    return;
 }

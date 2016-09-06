@@ -4,8 +4,10 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    Analyzer.cpp
+    Analyzer.cpp \
+    TokenMap.cpp
 
 HEADERS += \
     data_types.h \
-    Analyzer.h
+    Analyzer.h \
+    TokenMap.h
