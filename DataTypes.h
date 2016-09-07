@@ -5,6 +5,7 @@
  *  This is a data type header file, included by other program headers.
  */
 
+//#define PARENTHESIS_ONLY
 
 typedef enum TokenType_e
 {
@@ -13,17 +14,19 @@ typedef enum TokenType_e
   TokenType_StartToken = -1, //0xFF
   TokenType_FinishToken = 1, //0x01
 
-  TokenType_ParenOpenRound = -10,
-  TokenType_ParenCloseRound = 10,
+  TokenType_BracketOpenRound = -10,
+  TokenType_BracketCloseRound = 10,
 
-  TokenType_ParenOpenSquare = -20,
-  TokenType_ParenCloseSquare = 20,
+#ifdef PARENTHESIS_ONLY
+  TokenType_BracketOpenSquare = -20,
+  TokenType_BracketCloseSquare = 20,
 
-  TokenType_ParenOpenCurly = -30,
-  TokenType_ParenCloseCurly = 30,
+  TokenType_BracketOpenCurly = -30,
+  TokenType_BracketCloseCurly = 30,
 
-  TokenType_ParenOpenAngled = -40,
-  TokenType_ParenCloseAngled = 40,
+  TokenType_BracketOpenAngled = -40,
+  TokenType_BracketCloseAngled = 40,
+#endif
 
 } TokenType_e;
 
@@ -31,10 +34,10 @@ typedef enum TokenType_e
 
 typedef struct Token_T
 {
-  TokenType_e parenthesisType;
+  TokenType_e tokenType;
   int position;
 
-  Token_T() : parenthesisType(TokenType_e::TokenType_NoParenthsis), position(0) {}
+  Token_T() : tokenType(TokenType_e::TokenType_NoParenthsis), position(0) {}
 
 } Token_T;
 

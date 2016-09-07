@@ -5,10 +5,6 @@
 #include <map>
 
 /**
-  \brief The TokenMap class is used to
-*/
-
-/**
  * @brief The TokenMap class
  */
 class TokenMap
@@ -24,7 +20,7 @@ public:
    * @param c - input character
    * @return converted TokenType_e value
    */
-  TokenType_e GetParenthesisType(char c);
+  TokenType_e GetBracketType(char c);
 
 private:
   std::map<char, TokenType_e> m_token_map;

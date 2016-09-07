@@ -1,12 +1,12 @@
 #include "Analyzer.h"
 
-bool Analyzer::AnalyzeNextSymbol(std::string &input_string)
+bool Analyzer::AnalyzeNextSymbol(std::string &a_inputString)
 {
   m_pos++;
-  input_string = input_string.substr(1);
-  if(input_string.size() > 0)
+  a_inputString = a_inputString.substr(1);
+  if(a_inputString.size() > 0)
   {
-    if(!AnalyzeIt(input_string))
+    if(!AnalyzeCurChar(a_inputString))
       return false;
   }
   else
@@ -14,78 +14,75 @@ bool Analyzer::AnalyzeNextSymbol(std::string &input_string)
   return true;
 }
 
-void Analyzer::ClearTokenStack()
-{
-  while(m_stack.size() > 0)
-    m_stack.pop();
-}
-
 void Analyzer::InitTokenStack()
 {
   Token_T token;
-  token.parenthesisType = TokenType_StartToken;
+  token.tokenType = TokenType_StartToken;
   token.position = m_pos;
-  m_stack.push(token);
+  m_tokensStack.push(token);
 }
 
 void Analyzer::InitAnalyzer()
 {
   m_pos = 0;
-  ClearTokenStack();
   InitTokenStack();
 }
 
-bool Analyzer::AnalyzeOpenParenthesis(TokenType_e a_type)
+bool Analyzer::PushOpenBracketToStack(TokenType_e a_tokenType)
 {
   Token_T token;
-  token.parenthesisType = a_type;
+  token.tokenType = a_tokenType;
   token.position = m_pos;
-  m_stack.push(token);
+  m_tokensStack.push(token);
   return true;
 }
 
-bool Analyzer::AnalyzeCloseParenthesis(TokenType_e a_type)
+bool Analyzer::AnalyzeCloseBracket(TokenType_e a_tokenType)
 {
-  Token_T last_stack_token = m_stack.top();
-  TokenType_e mirrorType = (TokenType_e) -a_type;
-  if(last_stack_token.parenthesisType == mirrorType)
+  Token_T lastStackToken = m_tokensStack.top();
+  TokenType_e mirrorType = (TokenType_e) -a_tokenType;
+  if(lastStackToken.tokenType == mirrorType)
   {
-    m_stack.pop();
+    m_tokensStack.pop();
     return true;
   }
   else
   {
-    std::cout << "error: at line: " << m_str_count << " pos: " << m_pos << "" << std::endl;
+    std::cout << "error: at line: " << m_strCount << " pos: " << m_pos << "" << std::endl;
     return false;
   }
 }
 
-Analyzer::Analyzer() : m_pos(0), m_str_count(0)
+Analyzer::Analyzer() : m_pos(0), m_strCount(0)
 {
 }
 
-bool Analyzer::AnalyzeIt(std::string &input_string)
+bool Analyzer::AnalyzeCurChar(std::string &a_inputString)
 {
   bool result = false;
-  char cur_symbol = input_string.front();
+  char curSymbol = a_inputString.front();
 
-  TokenType_e parenthesis_type = m_token_map.GetParenthesisType(cur_symbol);
+  TokenType_e tokenType = m_tokensMap.GetBracketType(curSymbol);
 
-  switch(parenthesis_type)
+  switch(tokenType)
   {
-  case TokenType_ParenOpenAngled:
-  case TokenType_ParenOpenCurly:
-  case TokenType_ParenOpenRound:
-  case TokenType_ParenOpenSquare:
-    result = AnalyzeOpenParenthesis((TokenType_e) parenthesis_type);
+#ifdef PARENTHESIS_ONLY
+  case TokenType_BracketOpenAngled:
+  case TokenType_BracketOpenCurly:
+  case TokenType_BracketOpenSquare:
+#endif
+  case TokenType_BracketOpenRound:
+    result = PushOpenBracketToStack((TokenType_e) tokenType);
     break;
 
-  case TokenType_ParenCloseAngled:
-  case TokenType_ParenCloseCurly:
-  case TokenType_ParenCloseRound:
-  case TokenType_ParenCloseSquare:
+#ifdef PARENTHESIS_ONLY
+  case TokenType_BracketCloseAngled:
+  case TokenType_BracketCloseCurly:
+  case TokenType_BracketCloseSquare:
+#endif
+  case TokenType_BracketCloseRound:
   case TokenType_FinishToken:
-    result = AnalyzeCloseParenthesis((TokenType_e) parenthesis_type);
+    result = AnalyzeCloseBracket((TokenType_e) tokenType);
     break;
 
   default:
@@ -94,16 +91,18 @@ bool Analyzer::AnalyzeIt(std::string &input_string)
   }
 
   if(result)
-    result = AnalyzeNextSymbol(input_string);
+  {
+    result = AnalyzeNextSymbol(a_inputString);
+  }
 
   return result;
 }
 
-bool Analyzer::AnalyzeString(std::string &input_string)
+bool Analyzer::AnalyzeString(std::string &a_inputString)
 {
   InitAnalyzer();
-  input_string.push_back(TokenType_FinishToken);
-  bool res = AnalyzeIt(input_string);
-  m_str_count++;
+  a_inputString.push_back(TokenType_FinishToken);
+  bool res = AnalyzeCurChar(a_inputString);
+  m_strCount++;
   return res;
 }

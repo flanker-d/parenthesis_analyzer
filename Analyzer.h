@@ -17,23 +17,66 @@
 class Analyzer
 {
 private:
-  bool AnalyzeNextSymbol(std::string &input_string);
-  void ClearTokenStack();
+  /**
+   * @brief AnalyzeNextSymbol - Method processes next symbol of input string.
+   * @param a_inputString - current string from standard input
+   * @return success or fail
+   */
+  bool AnalyzeNextSymbol(std::string &a_inputString);
+
+  /**
+   * @brief InitTokenStack - Method initializations of the stack tokens.
+   * Push the token "start of line" onto the stack.
+   * Method must be executed before parsing a new line.
+   */
   void InitTokenStack();
+
+  /**
+   * @brief InitAnalyzer - Method resets the counter of the current row position.
+   * Method performs the initialization of the tokens stack.
+   */
   void InitAnalyzer();
-  bool AnalyzeOpenParenthesis(TokenType_e a_type);
-  bool AnalyzeCloseParenthesis(TokenType_e a_type);
+
+  /**
+   * @brief PushOpenBracketToStack - Push open bracket token to stack
+   * @param a_tokenType - token type
+   * @return success
+   */
+  bool PushOpenBracketToStack(TokenType_e a_tokenType);
+
+  /**
+   * @brief AnalyzeCloseBracket - function parses the closing bracket token.
+   * If top of stack has the necessary opening bracket token, then pop() this token.
+   * @param a_tokenType - token type
+   * @return success or fail
+   */
+  bool AnalyzeCloseBracket(TokenType_e a_tokenType);
 
 public:
+  /**
+   * @brief Analyzer - class constructor
+   */
   Analyzer();
-  bool AnalyzeIt(std::string &input_string);
-  bool AnalyzeString(std::string &input_string);
+
+  /**
+   * @brief AnalyzeCurChar - method parses the current input symbol
+   * @param a_inputString - current string from standard input
+   * @return success or fail
+   */
+  bool AnalyzeCurChar(std::string &a_inputString);
+
+  /**
+   * @brief AnalyzeString - recursive analysis of input string
+   * @param a_inputString - current string from standard input
+   * @return success or fail
+   */
+  bool AnalyzeString(std::string &a_inputString);
 
 private:
-  std::stack<Token_T> m_stack;
+  std::stack<Token_T> m_tokensStack;
   int m_pos;
-  int m_str_count;
-  TokenMap m_token_map;
+  int m_strCount;
+  TokenMap m_tokensMap;
 };
 
 #endif // ANALYZER_H

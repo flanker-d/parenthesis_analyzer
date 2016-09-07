@@ -5,20 +5,22 @@ TokenMap::TokenMap()
   m_token_map['\x01'] = TokenType_FinishToken; //0x01 == 1
   m_token_map['\xFF'] = TokenType_StartToken;  //0xFF == -1
 
-  m_token_map['('] = TokenType_ParenOpenRound;
-  m_token_map[')'] = TokenType_ParenCloseRound;
+  m_token_map['('] = TokenType_BracketOpenRound;
+  m_token_map[')'] = TokenType_BracketCloseRound;
 
-  m_token_map['['] = TokenType_ParenOpenSquare;
-  m_token_map[']'] = TokenType_ParenCloseSquare;
+#ifdef PARENTHESIS_ONLY
+  m_token_map['['] = TokenType_BracketOpenSquare;
+  m_token_map[']'] = TokenType_BracketCloseSquare;
 
-  m_token_map['{'] = TokenType_ParenOpenCurly;
-  m_token_map['}'] = TokenType_ParenCloseCurly;
+  m_token_map['{'] = TokenType_BracketOpenCurly;
+  m_token_map['}'] = TokenType_BracketCloseCurly;
 
-  m_token_map['<'] = TokenType_ParenOpenAngled;
-  m_token_map['>'] = TokenType_ParenCloseAngled;
+  m_token_map['<'] = TokenType_BracketOpenAngled;
+  m_token_map['>'] = TokenType_BracketCloseAngled;
+#endif
 }
 
-TokenType_e TokenMap::GetParenthesisType(char c)
+TokenType_e TokenMap::GetBracketType(char c)
 {
   auto it = m_token_map.find(c);
 
