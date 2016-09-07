@@ -1,43 +1,33 @@
 #ifndef DATA_TYPES_H
 #define DATA_TYPES_H
 
-typedef enum ParenthesisType_e
+typedef enum TokenType_e
 {
-  ParenthesisType_NoParenthsis = 0,
+  TokenType_NoParenthsis = 0,
 
-  ParenthesisType_OpenRound = -1,
-  ParenthesisType_CloseRound = 1,
+  TokenType_StartToken = -1, //0xFF
+  TokenType_FinishToken = 1, //0x01
 
-  ParenthesisType_OpenSquare = -2,
-  ParenthesisType_CloseSquare = 2,
+  TokenType_ParenOpenRound = -10,
+  TokenType_ParenCloseRound = 10,
 
-  ParenthesisType_OpenCurly = -3,
-  ParenthesisType_CloseCurly = 3,
+  TokenType_ParenOpenSquare = -20,
+  TokenType_ParenCloseSquare = 20,
 
-  ParenthesisType_OpenAngled = -4,
-  ParenthesisType_CloseAngled = 4,
+  TokenType_ParenOpenCurly = -30,
+  TokenType_ParenCloseCurly = 30,
 
-} ParenthesisType_e;
+  TokenType_ParenOpenAngled = -40,
+  TokenType_ParenCloseAngled = 40,
 
-typedef enum states_e
-{
-  states_init = 0,
-  states_round_open = '(',
-  states_round_close = ')',
-  states_square_open = '[',
-  states_square_close = ']',
-  states_figur_open = '{',
-  states_figur_close = '}'
-
-} states_e;
-
+} TokenType_e;
 
 typedef struct Token_T
 {
-  ParenthesisType_e parenthesisType;
+  TokenType_e parenthesisType;
   int position;
 
-  Token_T() : parenthesisType(ParenthesisType_e::ParenthesisType_NoParenthsis), position(0) {}
+  Token_T() : parenthesisType(TokenType_e::TokenType_NoParenthsis), position(0) {}
 
 } Token_T;
 

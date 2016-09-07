@@ -11,17 +11,21 @@ class Analyzer
 {
 private:
   void AnalyzeNextSymbol(std::string &input_string);
-  bool AnalyzeOpenParenthesis(ParenthesisType_e a_type);
-  bool AnalyzeCloseParenthesis(ParenthesisType_e a_type);
+  void ClearTokenStack();
+  void InitTokenStack();
+  void InitAnalyzer();
+  bool AnalyzeOpenParenthesis(TokenType_e a_type);
+  bool AnalyzeCloseParenthesis(TokenType_e a_type);
 
 public:
   Analyzer();
   void AnalyzeIt(std::string &input_string);
+  void AnalyzeString(std::string &input_string);
 
 private:
-  states_e m_curState;
   std::stack<Token_T> m_stack;
   int m_pos;
+  int m_str_count;
   TokenMap m_token_map;
 };
 

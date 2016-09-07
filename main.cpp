@@ -1,14 +1,14 @@
 #include "Analyzer.h"
 
-//std::string input_str = "(123[456{789}(123[456{789}])])";
-std::string input_str = "(123[456{789}])";
-//std::string input_str = "(123[456{789}}])";
-
-
 int main(int argc, char **argv)
 {
-  Analyzer anal;
-  anal.AnalyzeIt(input_str);
+  Analyzer analyzer;
+
+  for (std::string string_to_analyze; std::getline(std::cin, string_to_analyze);)
+  {
+    std::cout << string_to_analyze << std::endl;
+    analyzer.AnalyzeString(string_to_analyze);
+  }
 
   return 0;
 }
