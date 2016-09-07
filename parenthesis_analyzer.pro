@@ -8,6 +8,6 @@ SOURCES += main.cpp \
     TokenMap.cpp
 
 HEADERS += \
-    data_types.h \
     Analyzer.h \
-    TokenMap.h
+    TokenMap.h \
+    DataTypes.h

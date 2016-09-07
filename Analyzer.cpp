@@ -1,13 +1,17 @@
 #include "Analyzer.h"
 
-void Analyzer::AnalyzeNextSymbol(std::string &input_string)
+bool Analyzer::AnalyzeNextSymbol(std::string &input_string)
 {
   m_pos++;
   input_string = input_string.substr(1);
   if(input_string.size() > 0)
-    AnalyzeIt(input_string);
+  {
+    if(!AnalyzeIt(input_string))
+      return false;
+  }
   else
     std::cout << "success" << std::endl;
+  return true;
 }
 
 void Analyzer::ClearTokenStack()
@@ -60,7 +64,7 @@ Analyzer::Analyzer() : m_pos(0), m_str_count(0)
 {
 }
 
-void Analyzer::AnalyzeIt(std::string &input_string)
+bool Analyzer::AnalyzeIt(std::string &input_string)
 {
   bool result = false;
   char cur_symbol = input_string.front();
@@ -90,15 +94,16 @@ void Analyzer::AnalyzeIt(std::string &input_string)
   }
 
   if(result)
-    AnalyzeNextSymbol(input_string);
-  else
-    return;
+    result = AnalyzeNextSymbol(input_string);
+
+  return result;
 }
 
-void Analyzer::AnalyzeString(std::string &input_string)
+bool Analyzer::AnalyzeString(std::string &input_string)
 {
   InitAnalyzer();
   input_string.push_back(TokenType_FinishToken);
-  AnalyzeIt(input_string);
+  bool res = AnalyzeIt(input_string);
   m_str_count++;
+  return res;
 }

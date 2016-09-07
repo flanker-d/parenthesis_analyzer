@@ -2,27 +2,27 @@
 
 TokenMap::TokenMap()
 {
-  m_map['\x01'] = TokenType_FinishToken; //0x01 == 1
-  m_map['\xFF'] = TokenType_StartToken;  //0xFF == -1
+  m_token_map['\x01'] = TokenType_FinishToken; //0x01 == 1
+  m_token_map['\xFF'] = TokenType_StartToken;  //0xFF == -1
 
-  m_map['('] = TokenType_ParenOpenRound;
-  m_map[')'] = TokenType_ParenCloseRound;
+  m_token_map['('] = TokenType_ParenOpenRound;
+  m_token_map[')'] = TokenType_ParenCloseRound;
 
-  m_map['['] = TokenType_ParenOpenSquare;
-  m_map[']'] = TokenType_ParenCloseSquare;
+  m_token_map['['] = TokenType_ParenOpenSquare;
+  m_token_map[']'] = TokenType_ParenCloseSquare;
 
-  m_map['{'] = TokenType_ParenOpenCurly;
-  m_map['}'] = TokenType_ParenCloseCurly;
+  m_token_map['{'] = TokenType_ParenOpenCurly;
+  m_token_map['}'] = TokenType_ParenCloseCurly;
 
-  m_map['<'] = TokenType_ParenOpenAngled;
-  m_map['>'] = TokenType_ParenCloseAngled;
+  m_token_map['<'] = TokenType_ParenOpenAngled;
+  m_token_map['>'] = TokenType_ParenCloseAngled;
 }
 
 TokenType_e TokenMap::GetParenthesisType(char c)
 {
-  auto it = m_map.find(c);
+  auto it = m_token_map.find(c);
 
-  if(it != m_map.end())
+  if(it != m_token_map.end())
     return it->second;
   else
     return TokenType_NoParenthsis;

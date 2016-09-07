@@ -1,6 +1,11 @@
 #ifndef DATA_TYPES_H
 #define DATA_TYPES_H
 
+/** @file DataTypes.h
+ *  This is a data type header file, included by other program headers.
+ */
+
+
 typedef enum TokenType_e
 {
   TokenType_NoParenthsis = 0,
@@ -21,6 +26,8 @@ typedef enum TokenType_e
   TokenType_ParenCloseAngled = 40,
 
 } TokenType_e;
+
+
 
 typedef struct Token_T
 {

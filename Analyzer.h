@@ -1,16 +1,23 @@
 #ifndef ANALYZER_H
 #define ANALYZER_H
 
+/** @file Analyzer.h
+ *  This is an analyzer header file.
+ */
+
 #include <iostream>
 #include <stack>
 
-#include "data_types.h"
+#include "DataTypes.h"
 #include "TokenMap.h"
 
+/**
+ * @brief The Analyzer class
+ */
 class Analyzer
 {
 private:
-  void AnalyzeNextSymbol(std::string &input_string);
+  bool AnalyzeNextSymbol(std::string &input_string);
   void ClearTokenStack();
   void InitTokenStack();
   void InitAnalyzer();
@@ -19,8 +26,8 @@ private:
 
 public:
   Analyzer();
-  void AnalyzeIt(std::string &input_string);
-  void AnalyzeString(std::string &input_string);
+  bool AnalyzeIt(std::string &input_string);
+  bool AnalyzeString(std::string &input_string);
 
 private:
   std::stack<Token_T> m_stack;
