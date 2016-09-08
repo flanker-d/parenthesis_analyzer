@@ -2,13 +2,13 @@
 
 TokenMap::TokenMap()
 {
-  m_token_map['\x01'] = TokenType_FinishToken; //0x01 == 1
-  m_token_map['\xFF'] = TokenType_StartToken;  //0xFF == -1
+  m_tokenMap['\x01'] = TokenType_FinishToken; //0x01 == 1
+  m_tokenMap['\xFF'] = TokenType_StartToken;  //0xFF == -1
 
-  m_token_map['('] = TokenType_BracketOpenRound;
-  m_token_map[')'] = TokenType_BracketCloseRound;
+  m_tokenMap['('] = TokenType_BracketOpenRound;
+  m_tokenMap[')'] = TokenType_BracketCloseRound;
 
-#ifdef PARENTHESIS_ONLY
+#ifdef ALL_BRACKETS
   m_token_map['['] = TokenType_BracketOpenSquare;
   m_token_map[']'] = TokenType_BracketCloseSquare;
 
@@ -20,12 +20,22 @@ TokenMap::TokenMap()
 #endif
 }
 
-TokenType_e TokenMap::GetBracketType(char c)
+TokenType_e TokenMap::CharToTokenType(char c)
 {
-  auto it = m_token_map.find(c);
+  auto it = m_tokenMap.find(c);
 
-  if(it != m_token_map.end())
+  if(it != m_tokenMap.end())
     return it->second;
   else
     return TokenType_NoParenthsis;
+}
+
+char TokenMap::TokenTypeToChar(TokenType_e a_tokenType)
+{
+  for(auto it = m_tokenMap.begin(); it != m_tokenMap.end(); ++it)
+  {
+    if(it->second == a_tokenType)
+      return it->first;
+  }
+  return '\0';
 }

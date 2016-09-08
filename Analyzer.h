@@ -10,9 +10,11 @@
 
 #include "DataTypes.h"
 #include "TokenMap.h"
+#include "ErrorHandler.h"
 
 /**
- * @brief The Analyzer class
+ * @brief The Analyzer class to analyzes sequence of characters
+ * and finds out its state in terms of closed brackets
  */
 class Analyzer
 {
@@ -68,15 +70,30 @@ public:
   /**
    * @brief AnalyzeString - recursive analysis of input string
    * @param a_inputString - current string from standard input
-   * @return success or fail
    */
-  bool AnalyzeString(std::string &a_inputString);
+  void AnalyzeString(std::string &a_inputString);
 
 private:
+  /**
+   * @brief m_tokensStack - container for helping to analyzes sequence of characters
+   */
   std::stack<Token_T> m_tokensStack;
+  /**
+   * @brief m_pos - current position in input line
+   */
   int m_pos;
+  /**
+   * @brief m_strCount - number of current precessing line
+   */
   int m_strCount;
-  TokenMap m_tokensMap;
+  /**
+   * @brief m_tokenMap - container for helping to analyzes sequence of characters
+   */
+  TokenMap m_tokenMap;
+  /**
+   * @brief m_errorHandler - errors handler
+   */
+  ErrorHandler m_errorHandler;
 };
 
 #endif // ANALYZER_H

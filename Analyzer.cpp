@@ -6,11 +6,18 @@ bool Analyzer::AnalyzeNextSymbol(std::string &a_inputString)
   a_inputString = a_inputString.substr(1);
   if(a_inputString.size() > 0)
   {
+    // error detected
     if(!AnalyzeCurChar(a_inputString))
+    {
       return false;
+    }
   }
   else
-    std::cout << "success" << std::endl;
+  {
+    // success
+    m_errorHandler.ProcessSuccess(m_strCount);
+  }
+
   return true;
 }
 
@@ -48,7 +55,7 @@ bool Analyzer::AnalyzeCloseBracket(TokenType_e a_tokenType)
   }
   else
   {
-    std::cout << "error: at line: " << m_strCount << " pos: " << m_pos << "" << std::endl;
+    m_errorHandler.ProcessError(lastStackToken, a_tokenType, m_strCount, m_pos);
     return false;
   }
 }
@@ -62,11 +69,11 @@ bool Analyzer::AnalyzeCurChar(std::string &a_inputString)
   bool result = false;
   char curSymbol = a_inputString.front();
 
-  TokenType_e tokenType = m_tokensMap.GetBracketType(curSymbol);
+  TokenType_e tokenType = m_tokenMap.CharToTokenType(curSymbol);
 
   switch(tokenType)
   {
-#ifdef PARENTHESIS_ONLY
+#ifdef ALL_BRACKETS
   case TokenType_BracketOpenAngled:
   case TokenType_BracketOpenCurly:
   case TokenType_BracketOpenSquare:
@@ -75,7 +82,7 @@ bool Analyzer::AnalyzeCurChar(std::string &a_inputString)
     result = PushOpenBracketToStack((TokenType_e) tokenType);
     break;
 
-#ifdef PARENTHESIS_ONLY
+#ifdef ALL_BRACKETS
   case TokenType_BracketCloseAngled:
   case TokenType_BracketCloseCurly:
   case TokenType_BracketCloseSquare:
@@ -98,11 +105,10 @@ bool Analyzer::AnalyzeCurChar(std::string &a_inputString)
   return result;
 }
 
-bool Analyzer::AnalyzeString(std::string &a_inputString)
+void Analyzer::AnalyzeString(std::string &a_inputString)
 {
   InitAnalyzer();
   a_inputString.push_back(TokenType_FinishToken);
-  bool res = AnalyzeCurChar(a_inputString);
+  AnalyzeCurChar(a_inputString);
   m_strCount++;
-  return res;
 }

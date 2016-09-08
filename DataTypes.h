@@ -5,7 +5,7 @@
  *  This is a data type header file, included by other program headers.
  */
 
-//#define PARENTHESIS_ONLY
+//#define ALL_BRACKETS
 
 typedef enum TokenType_e
 {
@@ -17,7 +17,7 @@ typedef enum TokenType_e
   TokenType_BracketOpenRound = -10,
   TokenType_BracketCloseRound = 10,
 
-#ifdef PARENTHESIS_ONLY
+#ifdef ALL_BRACKETS
   TokenType_BracketOpenSquare = -20,
   TokenType_BracketCloseSquare = 20,
 
@@ -29,7 +29,6 @@ typedef enum TokenType_e
 #endif
 
 } TokenType_e;
-
 
 
 typedef struct Token_T

@@ -5,9 +5,11 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     Analyzer.cpp \
-    TokenMap.cpp
+    TokenMap.cpp \
+    ErrorHandler.cpp
 
 HEADERS += \
     Analyzer.h \
     TokenMap.h \
-    DataTypes.h
+    DataTypes.h \
+    ErrorHandler.h
